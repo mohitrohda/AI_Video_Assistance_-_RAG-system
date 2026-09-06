@@ -3,3 +3,5 @@
 core/__pycache__/
 utils/__pycache__/
 .DS_Store
+downloades
+vector_db
