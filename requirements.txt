@@ -24,6 +24,7 @@ langchain-mistralai>=0.2.0        # LangChain integration for Mistral
 langchain>=0.3.0
 langchain-core>=0.3.0
 langchain-community>=0.3.0
+langchain-text-splitters>=0.3.0
 
 
 # ── RAG / Vector Database ────────────────────────────────────────────────────
