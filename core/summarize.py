@@ -4,9 +4,12 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
+from core.local_llm_setup import get_llm
 
 import os 
 
+
+'''
 def get_llm():
     return ChatOpenAI(
         model="openrouter/free",
@@ -14,7 +17,7 @@ def get_llm():
         base_url="https://openrouter.ai/api/v1",
         temperature=0.3,
     )
-
+'''
 
 def split_transcript(transcript: str) -> list:
     splitter = RecursiveCharacterTextSplitter(
