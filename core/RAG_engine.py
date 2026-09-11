@@ -5,8 +5,9 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from core.vector_store import build_vector_store, load_vector_store, get_retriever
+from core.local_llm_setup import get_llm
 
-
+'''
 def get_llm():
     return ChatOpenAI(
         model="openrouter/free",
@@ -14,7 +15,7 @@ def get_llm():
         base_url="https://openrouter.ai/api/v1",
         temperature=0.3,
     )
-
+'''    
 
 def format_docs(docs):
     return "\n\n".join([doc.page_content for doc in docs])
