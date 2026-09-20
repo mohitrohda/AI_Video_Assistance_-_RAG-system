@@ -1,11 +1,12 @@
  #Actionableitems , decision , questions 
 
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_mistralai import ChatMistralAI
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
-from core.local_llm_setup import get_llm
+
 from dotenv import load_dotenv
 import os
 
@@ -21,9 +22,17 @@ def get_llm():
     )
 '''
 
+api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+
+print("API KEY FOUND:", bool(api_key))
+
+llm = ChatGoogleGenerativeAI(
+    model = "gemini-3.5-flash-lite",
+    api_key=api_key
+)
+
 
 def build_chain(system_prompt : str):
-    llm = get_llm()
     return (
         RunnablePassthrough() | RunnableLambda(lambda x : {"text" : x}) |ChatPromptTemplate.from_messages([
         ("system", system_prompt),

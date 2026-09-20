@@ -1,11 +1,14 @@
 import os
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_mistralai import ChatMistralAI
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from core.vector_store import build_vector_store, load_vector_store, get_retriever
-from core.local_llm_setup import get_llm
+
+from dotenv import load_dotenv
+load_dotenv()
 
 '''
 def get_llm():
@@ -16,6 +19,14 @@ def get_llm():
         temperature=0.3,
     )
 '''    
+api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+
+print("API KEY FOUND:", bool(api_key))
+
+llm = ChatGoogleGenerativeAI(
+    model = "gemini-3.5-flash-lite",
+    api_key=api_key
+)
 
 def format_docs(docs):
     return "\n\n".join([doc.page_content for doc in docs])
@@ -26,8 +37,6 @@ def build_rag_chain(transcript:str):
     vector_store = build_vector_store(transcript)
 
     retriever = get_retriever(vector_store, k = 4)
-
-    llm = get_llm()
 
     prompt = ChatPromptTemplate.from_messages(
 
@@ -65,7 +74,6 @@ def load_rag_chain():
     vector_store = load_vector_store()
     retriver = get_retriever()
 
-    llm = get_llm()
     prompt = ChatPromptTemplate.from_messages([
         (
             "system",

@@ -1,11 +1,14 @@
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_mistralai import ChatMistralAI
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
-from core.local_llm_setup import get_llm
 
+
+from dotenv import load_dotenv
+load_dotenv()
 import os 
 
 
@@ -19,6 +22,15 @@ def get_llm():
     )
 '''
 
+api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+
+print("API KEY FOUND:", bool(api_key))
+
+llm = ChatGoogleGenerativeAI(
+    model = "gemini-3.5-flash-lite",
+    api_key=api_key
+)
+
 def split_transcript(transcript: str) -> list:
     splitter = RecursiveCharacterTextSplitter(
         chunk_size = 3000,
@@ -28,8 +40,7 @@ def split_transcript(transcript: str) -> list:
     return splitter.split_text(transcript)
 
 def summarize(transcript : str) -> str:
-    llm = get_llm()
-
+    
     map_prompt = ChatPromptTemplate.from_messages(
         [
         ("system", "Summarize this portion of a meeting transcript concisely."),
@@ -63,9 +74,6 @@ def summarize(transcript : str) -> str:
     return combined_chain.invoke(combined)
 
 def generate_title(transcipt : str) -> str:
-    llm = get_llm()
-
-    
 
     title_chain = (
         RunnablePassthrough() | RunnableLambda(lambda x:{"text":x}) | 
