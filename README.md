@@ -1,4 +1,4 @@
-# 🤖 AI Video Assistant --- Meeting Intelligence & RAG
+# 🤖 AI Video Assistant - Meeting Intelligence & RAG
 
 An AI-powered meeting intelligence application that transforms meeting
 videos into searchable, actionable knowledge.
